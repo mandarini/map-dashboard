@@ -17,14 +17,16 @@ export class MapComponent implements AfterViewInit {
 
   maps: any;
   map: any;
+  markersRef: AngularFireList<any>;
   markers: Observable<any[]>;
-  markersCh: Observable<any[]>;
+  markersArray: Array<any>;
 
   @ViewChild('mapElement') mapElm: ElementRef;
 
   constructor(private load: ScriptLoadService, private db: AngularFireDatabase) {
 
-    this.markers = this.db.list('/markers').valueChanges();
+    this.markersRef = this.db.list('/markers');
+    this.markers = this.markersRef.snapshotChanges(['child_added']);
 
   }
 
@@ -49,16 +51,38 @@ export class MapComponent implements AfterViewInit {
       });
     });
 
-    this.markers.subscribe(x => {
-      console.log(x);
-      x.map(c => {
+    this.loadAllMarkers();
+
+    /**
+    * Only load new markers
+    */
+
+    this.markers
+      .subscribe(actions => {
+        actions.forEach(action => {
+          console.log('MARKER', action.payload.val());
+          let c = action.payload.val();
+          let marker = new this.maps.Marker({
+            position: c.position,
+            title: c.title,
+            map: this.map
+          });
+        });
+      });
+  }
+
+  loadAllMarkers(): void {
+    this.db.list('/markers').query.once("value").then(snapshot => {
+      snapshot.forEach(child => {
+        let c = child.val();
         let marker = new this.maps.Marker({
-                position: c.position,
-                title: c.title,
-                map: this.map
+          position: c.position,
+          title: c.title,
+          map: this.map
         });
       });
     });
+
   }
 
 }
