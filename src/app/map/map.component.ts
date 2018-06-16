@@ -27,6 +27,7 @@ export class MapComponent implements AfterViewInit {
 
     this.markersRef = this.db.list('/markers');
     this.markers = this.markersRef.snapshotChanges(['child_added']);
+    this.markersArray = [];
 
   }
 
@@ -67,6 +68,7 @@ export class MapComponent implements AfterViewInit {
             title: c.title,
             map: this.map
           });
+          this.markersArray[action.payload.key] = marker;
         });
       });
   }
@@ -80,9 +82,17 @@ export class MapComponent implements AfterViewInit {
           title: c.title,
           map: this.map
         });
+        this.markersArray[child.key] = marker;
       });
     });
 
+  }
+
+  clearMarkers() {
+    let iterator = Object.keys(this.markersArray);
+    for (let i=0; i<iterator.length; i++) {
+      this.markersArray[iterator[i]].setMap(null);
+    }
   }
 
 }
