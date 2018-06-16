@@ -5,6 +5,7 @@ import { ScriptLoadService } from './script-load.service';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
@@ -28,7 +29,8 @@ const config = {
     BrowserModule,
     AngularFireModule.initializeApp(config),
     AngularFireDatabaseModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    AngularFireAuthModule
   ],
   providers: [ScriptLoadService],
   bootstrap: [AppComponent]
