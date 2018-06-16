@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ScriptLoadService } from '../script-load.service';
-import { Marker } from '../marker';
 import { FirebaseApp } from 'angularfire2';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Observable } from 'rxjs';
@@ -16,9 +15,10 @@ const url = 'https://maps.googleapis.com/maps/api/js?key=' + your_API_key;
 })
 export class MapComponent implements AfterViewInit {
 
-  markersRef: AngularFireList<any>;
-  markers: Observable<Marker[]>;
-  markersCh: Observable<Marker[]>;
+  maps: any;
+  map: any;
+  markers: Observable<any[]>;
+  markersCh: Observable<any[]>;
 
   @ViewChild('mapElement') mapElm: ElementRef;
 
@@ -47,7 +47,7 @@ export class MapComponent implements AfterViewInit {
           position: this.maps.ControlPosition.RIGHT_BOTTOM
         }
       });
-    }
+    });
 
     this.markers.subscribe(x => {
       console.log(x);
@@ -56,9 +56,8 @@ export class MapComponent implements AfterViewInit {
                 position: c.position,
                 title: c.title,
                 map: this.map
-        })
-      })
-
+        });
+      });
     });
   }
 
