@@ -23,6 +23,7 @@ export class MapComponent implements AfterViewInit {
   distanceArray: Array<any>;
   furthest: string;
   telAviv: any;
+  infowindow: any;
 
   @ViewChild('mapElement') mapElm: ElementRef;
 
@@ -38,7 +39,7 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.load.loadScript(url, 'gmap', () => {
       this.maps = window['google']['maps'];
-      this.telAviv = new this.maps.LatLng(32.078491, 34.766687);
+      this.telAviv = new this.maps.LatLng(32.064850, 34.763226);
       this.map = new this.maps.Map(this.mapElm.nativeElement, {
         zoom: 3,
         center: this.telAviv,
@@ -71,6 +72,12 @@ export class MapComponent implements AfterViewInit {
             title: c.title,
             map: this.map
           });
+          this.infowindow = new this.maps.InfoWindow({
+            content: c.title
+          });
+          marker.addListener('click', () => {
+            this.infowindow.open(this.map, marker);
+          });
           this.markersArray[action.payload.key] = marker;
         });
       });
@@ -84,6 +91,12 @@ export class MapComponent implements AfterViewInit {
           position: c.position,
           title: c.title,
           map: this.map
+        });
+        this.infowindow = new this.maps.InfoWindow({
+          content: c.title
+        });
+        marker.addListener('click', () => {
+          this.infowindow.open(this.map, marker);
         });
         this.markersArray[child.key] = marker;
       });
