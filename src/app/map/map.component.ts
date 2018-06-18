@@ -121,7 +121,7 @@ export class MapComponent implements AfterViewInit {
     for (let i = 0; i < iterator.length; i++) {
       this.distanceArray.push({
         distance: this.calculate(this.markersArray[iterator[i]].getPosition()),
-        marker: this.markersArray[iterator[i]];
+        marker: this.markersArray[iterator[i]]
       });
     }
     this.distanceArray.sort(function(a, b) {
@@ -135,7 +135,7 @@ export class MapComponent implements AfterViewInit {
   }
 
   calculate(point_a: any) {
-	   return Math.round(google.maps.geometry.spherical.computeDistanceBetween(point_a, this.telAviv));
+	   return Math.round(this.maps.geometry.spherical.computeDistanceBetween(point_a, this.telAviv));
   }
 
 }
