@@ -1,5 +1,5 @@
 <div *ngIf="afAuth.user | async as user; else showLogin">
-  <h1>Hello {{ user.displayName }}!</h1>
+  <h3>Logged in as {{ user.displayName }}</h3>
   <app-map></app-map>
   <button (click)="logout()">Logout</button>
 </div>

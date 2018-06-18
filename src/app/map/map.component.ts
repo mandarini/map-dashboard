@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const your_API_key = 'AIzaSyAwVnwE1bEZf_Bkk_pSkGM0XlBSXJocVUY';
-const url = 'https://maps.googleapis.com/maps/api/js?key=' + your_API_key;
+const url = `https://maps.googleapis.com/maps/api/js?key=${your_API_key}&libraries=geometry`;
 
 @Component({
   selector: 'app-map',
@@ -20,6 +20,9 @@ export class MapComponent implements AfterViewInit {
   markersRef: AngularFireList<any>;
   markers: Observable<any[]>;
   markersArray: Array<any>;
+  distanceArray: Array<any>;
+  furthest: string;
+  telAviv: any;
 
   @ViewChild('mapElement') mapElm: ElementRef;
 
@@ -28,16 +31,17 @@ export class MapComponent implements AfterViewInit {
     this.markersRef = this.db.list('/markers');
     this.markers = this.markersRef.snapshotChanges(['child_added']);
     this.markersArray = [];
-
+    this.distanceArray = [];
+    this.furthest = null;
   }
 
   ngAfterViewInit(): void {
     this.load.loadScript(url, 'gmap', () => {
       this.maps = window['google']['maps'];
-      const loc = new this.maps.LatLng(32.078491, 34.766687);
+      this.telAviv = new this.maps.LatLng(32.078491, 34.766687);
       this.map = new this.maps.Map(this.mapElm.nativeElement, {
         zoom: 3,
-        center: loc,
+        center: this.telAviv,
         scrollwheel: true,
         panControl: false,
         mapTypeControl: false,
@@ -89,7 +93,7 @@ export class MapComponent implements AfterViewInit {
 
   clearMarkers() {
     let iterator = Object.keys(this.markersArray);
-    for (let i=0; i<iterator.length; i++) {
+    for (let i = 0; i < iterator.length; i++) {
       console.log(this.markersArray[iterator[i]]);
       this.markersArray[iterator[i]].setMap(null);
     }
@@ -97,6 +101,28 @@ export class MapComponent implements AfterViewInit {
 
   deleteEverything() {
     this.markersRef.remove();
+  }
+
+  findLongest() {
+    let iterator = Object.keys(this.markersArray);
+    for (let i = 0; i < iterator.length; i++) {
+      this.distanceArray.push({
+        distance: this.calculate(this.markersArray[iterator[i]].getPosition()),
+        marker: this.markersArray[iterator[i]];
+      });
+    }
+    this.distanceArray.sort(function(a, b) {
+      return b.distance - a.distance;
+    });
+    console.log(this.distanceArray);
+    this.furthest = this.distanceArray[0].marker.getTitle();
+    this.map.panTo(this.distanceArray[0].marker.getPosition());
+    this.map.setZoom(14);
+
+  }
+
+  calculate(point_a: any) {
+	   return Math.round(google.maps.geometry.spherical.computeDistanceBetween(point_a, this.telAviv));
   }
 
 }

@@ -1,7 +1,8 @@
 <div class="buttons">
- <button (click)="loadAllMarkers()">Refresh Map</button>
- <!-- <button (click)="clearMarkers()">Clear Map</button> -->
+  <button (click)="loadAllMarkers()">Refresh Map</button>
+ <button (click)="findLongest()">LONGEST WAY HERE</button>
  <button class="danger" (click)="deleteEverything()">Clear Database</button>
 </div>
+<h3 *ngIf="furthest">{{furthest}} traveled the furthest.</h3>
 
 <div class="map" #mapElement></div>
