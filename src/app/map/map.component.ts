@@ -34,10 +34,9 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.load.loadScript(url, 'gmap', () => {
       this.maps = window['google']['maps'];
-      console.log(this.maps);
-      const loc = new this.maps.LatLng(51.561638, -0.14);
+      const loc = new this.maps.LatLng(32.078491, 34.766687);
       this.map = new this.maps.Map(this.mapElm.nativeElement, {
-        zoom: 11,
+        zoom: 3,
         center: loc,
         scrollwheel: true,
         panControl: false,
@@ -91,8 +90,13 @@ export class MapComponent implements AfterViewInit {
   clearMarkers() {
     let iterator = Object.keys(this.markersArray);
     for (let i=0; i<iterator.length; i++) {
+      console.log(this.markersArray[iterator[i]]);
       this.markersArray[iterator[i]].setMap(null);
     }
+  }
+
+  deleteEverything() {
+    this.markersRef.remove();
   }
 
 }

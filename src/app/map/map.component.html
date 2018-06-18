@@ -1,3 +1,7 @@
-<button (click)="loadAllMarkers()">Refresh Map</button>
-<button (click)="clearMarkers()">Clear Map</button>
+<div class="buttons">
+ <button (click)="loadAllMarkers()">Refresh Map</button>
+ <!-- <button (click)="clearMarkers()">Clear Map</button> -->
+ <button class="danger" (click)="deleteEverything()">Clear Database</button>
+</div>
+
 <div class="map" #mapElement></div>
