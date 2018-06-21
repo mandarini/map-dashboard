@@ -11,12 +11,12 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './map/map.component';
 
 const config = {
-    apiKey: "AIzaSyC3X9Wdp9jgpOR2nCVhe4a8QV3nsns9Ie8",
-    authDomain: "map-psybercity.firebaseapp.com",
-    databaseURL: "https://map-psybercity.firebaseio.com",
-    projectId: "map-psybercity",
-    storageBucket: "map-psybercity.appspot.com",
-    messagingSenderId: "114738124484"
+    apiKey: ".",
+    authDomain: "yourapp.firebaseapp.com",
+    databaseURL: "https://yourapp.firebaseio.com",
+    projectId: "yourapp",
+    storageBucket: "yourapp.appspot.com",
+    messagingSenderId: "."
 };
 
 
